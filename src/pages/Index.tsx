@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import FlightForm from '../components/FlightForm';
+import SimpleFlightForm from '../components/SimpleFlightForm';
 import TicketPreview from '../components/TicketPreview';
 import { Card } from '@/components/ui/card';
 import { Plane, Download } from 'lucide-react';
@@ -49,7 +48,7 @@ const Index = () => {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Flight Ticket Generator</h1>
-              <p className="text-gray-600">Create realistic flight tickets instantly</p>
+              <p className="text-gray-600">Create realistic flight tickets with real airline data</p>
             </div>
           </div>
         </div>
@@ -63,10 +62,10 @@ const Index = () => {
                 Generate Your Flight Ticket
               </h2>
               <p className="text-gray-600 text-lg">
-                Fill in the details below to create a professional-looking flight ticket
+                Just enter your name, route, and date - we'll handle the rest with realistic flight data
               </p>
             </div>
-            <FlightForm onSubmit={handleFormSubmit} />
+            <SimpleFlightForm onSubmit={handleFormSubmit} />
           </div>
         )}
 
@@ -76,7 +75,7 @@ const Index = () => {
             <h3 className="text-xl font-semibold text-gray-900 mb-2">
               Generating Your Ticket...
             </h3>
-            <p className="text-gray-600">Please wait while we process your flight details</p>
+            <p className="text-gray-600">Finding the perfect flight details for you</p>
           </div>
         )}
 
