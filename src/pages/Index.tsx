@@ -18,6 +18,23 @@ export interface FlightData {
   terminal: string;
   class: string;
   bookingRef: string;
+  price?: number;
+  tripType?: 'one-way' | 'round-trip';
+  aircraft?: string;
+  returnFlight?: {
+    from: string;
+    to: string;
+    departureDate: string;
+    departureTime: string;
+    arrivalTime: string;
+    flightNumber: string;
+    airline: string;
+    seat: string;
+    gate: string;
+    terminal: string;
+    class: string;
+    aircraft: string;
+  };
 }
 
 const Index = () => {
