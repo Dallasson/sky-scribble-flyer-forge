@@ -1,5 +1,5 @@
 
-import { airports } from './airportDatabase';
+import { AIRPORTS } from './airportDatabase';
 
 export interface FlightOption {
   flightNumber: string;
@@ -45,8 +45,8 @@ const aircraftTypes = [
 const travelClasses = ['Economy', 'Premium Economy', 'Business', 'First Class'];
 
 export const searchFlights = (fromCode: string, toCode: string, date: string): FlightOption[] => {
-  const fromAirport = airports.find(a => a.code === fromCode);
-  const toAirport = airports.find(a => a.code === toCode);
+  const fromAirport = AIRPORTS.find(a => a.code === fromCode);
+  const toAirport = AIRPORTS.find(a => a.code === toCode);
   
   if (!fromAirport || !toAirport) {
     return [];

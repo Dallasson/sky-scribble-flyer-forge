@@ -5,7 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Button } from '@/components/ui/button';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Airport, airports } from '../services/airportDatabase';
+import { Airport, AIRPORTS } from '../services/airportDatabase';
 
 interface AirportSearchProps {
   value: Airport | null;
@@ -37,7 +37,7 @@ const AirportSearch: React.FC<AirportSearchProps> = ({ value, onChange, placehol
           <CommandEmpty>No airport found.</CommandEmpty>
           <CommandList>
             <CommandGroup>
-              {airports.map((airport) => (
+              {AIRPORTS.map((airport) => (
                 <CommandItem
                   key={airport.code}
                   value={`${airport.city} ${airport.code} ${airport.name}`}
