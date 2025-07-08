@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import SimpleFlightForm from '../components/SimpleFlightForm';
+import EnhancedFlightForm from '../components/EnhancedFlightForm';
 import TicketPreview from '../components/TicketPreview';
 import { Card } from '@/components/ui/card';
 import { Plane, Download } from 'lucide-react';
@@ -65,7 +66,7 @@ const Index = () => {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Flight Ticket Generator</h1>
-              <p className="text-gray-600">Create realistic flight tickets with real airline data</p>
+              <p className="text-gray-600">Search flights and create realistic flight tickets</p>
             </div>
           </div>
         </div>
@@ -73,16 +74,16 @@ const Index = () => {
 
       <div className="container mx-auto px-4 py-8">
         {!flightData && !isGenerating && (
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Generate Your Flight Ticket
+                Find Your Perfect Flight
               </h2>
               <p className="text-gray-600 text-lg">
-                Just enter your name, route, and date - we'll handle the rest with realistic flight data
+                Search through our extensive flight database and generate professional tickets
               </p>
             </div>
-            <SimpleFlightForm onSubmit={handleFormSubmit} />
+            <EnhancedFlightForm onSubmit={handleFormSubmit} />
           </div>
         )}
 
@@ -92,7 +93,7 @@ const Index = () => {
             <h3 className="text-xl font-semibold text-gray-900 mb-2">
               Generating Your Ticket...
             </h3>
-            <p className="text-gray-600">Finding the perfect flight details for you</p>
+            <p className="text-gray-600">Creating your professional flight ticket</p>
           </div>
         )}
 
