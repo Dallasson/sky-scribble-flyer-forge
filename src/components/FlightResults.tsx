@@ -35,63 +35,63 @@ const FlightResults: React.FC<FlightResultsProps> = ({
     onSelect: () => void;
     type: 'departure' | 'return';
   }) => (
-    <Card className={`p-4 cursor-pointer transition-all ${
-      isSelected ? 'ring-2 ring-blue-500 bg-blue-50' : 'hover:shadow-md'
+    <Card className={`p-4 cursor-pointer transition-all border-border bg-card ${
+      isSelected ? 'ring-2 ring-purple-600 bg-purple-100 dark:bg-purple-900/20' : 'hover:shadow-md hover:bg-accent'
     }`}>
       <div className="flex justify-between items-center">
         <div className="flex-1">
           <div className="flex items-center space-x-4 mb-2">
-            <div className="text-lg font-semibold">{flight.airline}</div>
-            <div className="text-sm text-gray-600">{flight.flightNumber}</div>
-            <div className="text-sm text-gray-600">{flight.aircraft}</div>
+            <div className="text-lg font-semibold text-foreground">{flight.airline}</div>
+            <div className="text-sm text-muted-foreground">{flight.flightNumber}</div>
+            <div className="text-sm text-muted-foreground">{flight.aircraft}</div>
           </div>
           
           <div className="flex items-center space-x-6 mb-2">
             <div className="text-center">
-              <div className="text-lg font-bold">{flight.departureTime}</div>
-              <div className="text-sm text-gray-600">{flight.from}</div>
+              <div className="text-lg font-bold text-foreground">{flight.departureTime}</div>
+              <div className="text-sm text-muted-foreground">{flight.from}</div>
             </div>
             
             <div className="flex-1 flex items-center justify-center">
               <div className="text-center">
                 <div className="flex items-center justify-center mb-1">
-                  <div className="h-px bg-gray-300 w-8"></div>
-                  <Plane className="h-4 w-4 mx-2 text-gray-400" />
-                  <div className="h-px bg-gray-300 w-8"></div>
+                  <div className="h-px bg-muted-foreground w-8"></div>
+                  <Plane className="h-4 w-4 mx-2 text-muted-foreground" />
+                  <div className="h-px bg-muted-foreground w-8"></div>
                 </div>
-                <div className="text-xs text-gray-500">{flight.duration}</div>
+                <div className="text-xs text-muted-foreground">{flight.duration}</div>
                 {flight.stops > 0 && (
-                  <div className="text-xs text-orange-600">{flight.stops} stop{flight.stops > 1 ? 's' : ''}</div>
+                  <div className="text-xs text-orange-600 dark:text-orange-400">{flight.stops} stop{flight.stops > 1 ? 's' : ''}</div>
                 )}
               </div>
             </div>
             
             <div className="text-center">
-              <div className="text-lg font-bold">{flight.arrivalTime}</div>
-              <div className="text-sm text-gray-600">{flight.to}</div>
+              <div className="text-lg font-bold text-foreground">{flight.arrivalTime}</div>
+              <div className="text-sm text-muted-foreground">{flight.to}</div>
             </div>
           </div>
           
-          <div className="flex items-center space-x-4 text-sm text-gray-600">
+          <div className="flex items-center space-x-4 text-sm text-muted-foreground">
             <div className="flex items-center">
               <Users className="h-4 w-4 mr-1" />
-              {flight.availableSeats} seats left
+              <span className="text-foreground">{flight.availableSeats} seats left</span>
             </div>
             <div className="flex items-center">
               <Clock className="h-4 w-4 mr-1" />
-              {flight.class}
+              <span className="text-foreground">{flight.class}</span>
             </div>
           </div>
         </div>
         
         <div className="text-right ml-6">
-          <div className="text-2xl font-bold text-green-600 mb-2">
+          <div className="text-2xl font-bold text-green-600 dark:text-green-400 mb-2">
             ${flight.price}
           </div>
           <Button
             onClick={onSelect}
             variant={isSelected ? "default" : "outline"}
-            className={isSelected ? "bg-blue-600 hover:bg-blue-700" : ""}
+            className={isSelected ? "bg-purple-700 hover:bg-purple-800 text-white" : "border-border text-foreground hover:bg-accent"}
           >
             {isSelected ? 'Selected' : 'Select'}
           </Button>
@@ -101,10 +101,10 @@ const FlightResults: React.FC<FlightResultsProps> = ({
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 bg-background text-foreground">
       {/* Departure Flights */}
-      <div>
-        <h3 className="text-xl font-semibold mb-4">
+      <div className="bg-card rounded-lg p-4 border border-border">
+        <h3 className="text-xl font-semibold mb-4 text-foreground">
           Departure Flights ({departureFlights.length} options)
         </h3>
         <div className="space-y-3">
@@ -122,8 +122,8 @@ const FlightResults: React.FC<FlightResultsProps> = ({
 
       {/* Return Flights */}
       {tripType === 'round-trip' && returnFlights && returnFlights.length > 0 && (
-        <div>
-          <h3 className="text-xl font-semibold mb-4">
+        <div className="bg-card rounded-lg p-4 border border-border">
+          <h3 className="text-xl font-semibold mb-4 text-foreground">
             Return Flights ({returnFlights.length} options)
           </h3>
           <div className="space-y-3">
@@ -142,22 +142,22 @@ const FlightResults: React.FC<FlightResultsProps> = ({
 
       {/* Total Price Summary */}
       {selectedDeparture && (tripType === 'one-way' || selectedReturn) && (
-        <Card className="p-4 bg-gray-50">
+        <Card className="p-4 bg-purple-700 border border-purple-600">
           <div className="flex justify-between items-center">
             <div>
-              <h4 className="font-semibold">Price Summary</h4>
-              <div className="text-sm text-gray-600 mt-1">
+              <h4 className="font-semibold text-white">Price Summary</h4>
+              <div className="text-sm text-purple-200 mt-1">
                 {tripType === 'one-way' ? 'One-way ticket' : 'Round-trip ticket'}
               </div>
             </div>
             <div className="text-right">
-              <div className="text-2xl font-bold text-green-600">
+              <div className="text-2xl font-bold text-white">
                 ${tripType === 'one-way' 
                   ? selectedDeparture.price 
                   : selectedDeparture.price + (selectedReturn?.price || 0)
                 }
               </div>
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-purple-200">
                 Total for {tripType === 'one-way' ? '1' : '2'} passenger{tripType === 'round-trip' ? 's' : ''}
               </div>
             </div>
