@@ -1,11 +1,14 @@
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { FlightData } from '../pages/Index';
 import { Download, Plane, Calendar, Clock, MapPin, User, CreditCard } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import EmailDownload from './EmailDownload';
+import RewardVideoModal from './RewardVideoModal';
+import { useToast } from '@/hooks/use-toast';
 
 interface TicketPreviewProps {
   flightData: FlightData;
@@ -13,32 +16,80 @@ interface TicketPreviewProps {
 
 const TicketPreview: React.FC<TicketPreviewProps> = ({ flightData }) => {
   const ticketRef = useRef<HTMLDivElement>(null);
+  const [showRewardVideo, setShowRewardVideo] = useState(false);
+  const { toast } = useToast();
+
+  const generatePDF = async (): Promise<Blob> => {
+    if (!ticketRef.current) throw new Error('Ticket ref not found');
+
+    const canvas = await html2canvas(ticketRef.current, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff'
+    });
+
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new jsPDF({
+      orientation: 'landscape',
+      unit: 'mm',
+      format: 'a4'
+    });
+
+    const imgWidth = 297;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+    return pdf.output('blob');
+  };
 
   const downloadPDF = async () => {
-    if (!ticketRef.current) return;
-
     try {
-      const canvas = await html2canvas(ticketRef.current, {
-        scale: 2,
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: '#ffffff'
-      });
-
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF({
-        orientation: 'landscape',
-        unit: 'mm',
-        format: 'a4'
-      });
-
-      const imgWidth = 297; // A4 landscape width in mm
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-      pdf.save(`flight-ticket-${flightData.bookingRef}.pdf`);
+      const pdfBlob = await generatePDF();
+      const url = URL.createObjectURL(pdfBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `flight-ticket-${flightData.bookingRef}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
     } catch (error) {
       console.error('Error generating PDF:', error);
+      toast({
+        title: "Download Failed",
+        description: "Could not generate PDF. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleDownloadClick = () => {
+    setShowRewardVideo(true);
+  };
+
+  const handleVideoComplete = () => {
+    downloadPDF();
+  };
+
+  const handleSendEmail = async (email: string) => {
+    try {
+      const pdfBlob = await generatePDF();
+      
+      // Simulate email sending (in real app, you'd call your backend API)
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      console.log(`Sending PDF to ${email}`, pdfBlob);
+      
+      // In a real implementation, you would send this to your backend:
+      // const formData = new FormData();
+      // formData.append('pdf', pdfBlob, `flight-ticket-${flightData.bookingRef}.pdf`);
+      // formData.append('email', email);
+      // await fetch('/api/send-email', { method: 'POST', body: formData });
+      
+    } catch (error) {
+      console.error('Error sending email:', error);
+      throw error;
     }
   };
 
@@ -54,11 +105,16 @@ const TicketPreview: React.FC<TicketPreviewProps> = ({ flightData }) => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-center">
-        <Button onClick={downloadPDF} className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg">
+      <div className="flex flex-col gap-4 items-center">
+        <Button onClick={handleDownloadClick} className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg">
           <Download className="h-5 w-5 mr-2" />
           Download PDF
         </Button>
+        
+        <div className="w-full max-w-md">
+          <div className="text-center text-sm text-gray-600 mb-2">Or send directly to your email:</div>
+          <EmailDownload onSendEmail={handleSendEmail} />
+        </div>
       </div>
 
       <div ref={ticketRef} className="bg-white p-8 mx-auto" style={{ width: '800px' }}>
@@ -197,6 +253,12 @@ const TicketPreview: React.FC<TicketPreviewProps> = ({ flightData }) => {
           </div>
         </div>
       </div>
+
+      <RewardVideoModal
+        isOpen={showRewardVideo}
+        onClose={() => setShowRewardVideo(false)}
+        onVideoComplete={handleVideoComplete}
+      />
     </div>
   );
 };

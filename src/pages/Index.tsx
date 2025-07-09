@@ -1,7 +1,7 @@
-
 import React, { useState } from 'react';
 import EnhancedFlightForm from '../components/EnhancedFlightForm';
 import TicketPreview from '../components/TicketPreview';
+import VerticalAd from '../components/VerticalAd';
 import { Card } from '@/components/ui/card';
 import { Plane, Download } from 'lucide-react';
 
@@ -56,7 +56,11 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 relative">
+      {/* Vertical Ads */}
+      <VerticalAd position="left" />
+      <VerticalAd position="right" />
+      
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-4 py-6">
@@ -104,7 +108,7 @@ const Index = () => {
                 Your Flight Ticket is Ready!
               </h2>
               <p className="text-gray-600 text-lg mb-6">
-                Preview your ticket below and download it as a PDF
+                Preview your ticket below and download it as a PDF or send to email
               </p>
               <button
                 onClick={resetForm}
