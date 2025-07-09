@@ -1,7 +1,9 @@
+
 import React, { useState } from 'react';
 import EnhancedFlightForm from '../components/EnhancedFlightForm';
 import TicketPreview from '../components/TicketPreview';
 import VerticalAd from '../components/VerticalAd';
+import { ThemeToggle } from '../components/ThemeToggle';
 import { Card } from '@/components/ui/card';
 import { Plane, Download } from 'lucide-react';
 
@@ -56,34 +58,37 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 relative">
-      {/* Vertical Ads */}
+    <div className="min-h-screen bg-background relative">
+      {/* Vertical Ads - positioned to not overlap content */}
       <VerticalAd position="left" />
       <VerticalAd position="right" />
       
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center space-x-3">
-            <div className="bg-blue-600 p-2 rounded-lg">
-              <Plane className="h-6 w-6 text-white" />
+      <div className="bg-card shadow-sm border-b border-border">
+        <div className="container mx-auto px-4 py-6 xl:px-40">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="bg-primary p-2 rounded-lg">
+                <Plane className="h-6 w-6 text-primary-foreground" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-foreground">Flight Ticket Generator</h1>
+                <p className="text-muted-foreground">Search flights and create realistic flight tickets</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Flight Ticket Generator</h1>
-              <p className="text-gray-600">Search flights and create realistic flight tickets</p>
-            </div>
+            <ThemeToggle />
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 xl:px-40">
         {!flightData && !isGenerating && (
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              <h2 className="text-3xl font-bold text-foreground mb-4">
                 Find Your Perfect Flight
               </h2>
-              <p className="text-gray-600 text-lg">
+              <p className="text-muted-foreground text-lg">
                 Search through our extensive flight database and generate professional tickets
               </p>
             </div>
@@ -93,26 +98,26 @@ const Index = () => {
 
         {isGenerating && (
           <div className="flex flex-col items-center justify-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
+            <h3 className="text-xl font-semibold text-foreground mb-2">
               Generating Your Ticket...
             </h3>
-            <p className="text-gray-600">Creating your professional flight ticket</p>
+            <p className="text-muted-foreground">Creating your professional flight ticket</p>
           </div>
         )}
 
         {flightData && !isGenerating && (
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              <h2 className="text-3xl font-bold text-foreground mb-4">
                 Your Flight Ticket is Ready!
               </h2>
-              <p className="text-gray-600 text-lg mb-6">
+              <p className="text-muted-foreground text-lg mb-6">
                 Preview your ticket below and download it as a PDF or send to email
               </p>
               <button
                 onClick={resetForm}
-                className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition-colors mr-4"
+                className="bg-secondary hover:bg-secondary/80 text-secondary-foreground px-6 py-2 rounded-lg transition-colors mr-4"
               >
                 Create Another Ticket
               </button>
@@ -123,9 +128,9 @@ const Index = () => {
       </div>
 
       {/* Footer */}
-      <footer className="bg-gray-50 border-t mt-16">
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center text-gray-600">
+      <footer className="bg-muted border-t border-border mt-16">
+        <div className="container mx-auto px-4 py-8 xl:px-40">
+          <div className="text-center text-muted-foreground">
             <p className="mb-2">
               <strong>Disclaimer:</strong> This is a fake ticket generator for entertainment purposes only.
             </p>
