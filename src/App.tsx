@@ -13,7 +13,7 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider defaultTheme="system" storageKey="flight-ticket-theme">
+    <ThemeProvider defaultTheme="light" storageKey="flight-ticket-theme">
       <TooltipProvider>
         <Toaster />
         <Sonner />

@@ -23,9 +23,30 @@ const VerticalAd: React.FC<VerticalAdProps> = ({ position }) => {
   }, []);
 
   return (
-    <div className={`fixed ${position === 'left' ? 'left-2' : 'right-2'} top-1/2 transform -translate-y-1/2 w-32 h-80 z-10 hidden xl:block`}>
-      <div className="w-full h-full" id={`ad-${position}`}>
+    <div 
+      className={`
+        fixed 
+        ${position === 'left' ? 'left-4' : 'right-4'} 
+        top-1/2 
+        transform 
+        -translate-y-1/2 
+        w-40 
+        h-3/4 
+        z-10 
+        hidden 
+        xl:block
+        bg-background
+        border
+        border-border
+        rounded-lg
+        shadow-lg
+      `}
+    >
+      <div className="w-full h-full p-2" id={`ad-${position}`}>
         {/* Ad content will be injected by the script */}
+        <div className="w-full h-full bg-muted/20 rounded flex items-center justify-center text-muted-foreground text-sm">
+          Advertisement
+        </div>
       </div>
     </div>
   );
