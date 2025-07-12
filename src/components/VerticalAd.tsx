@@ -7,20 +7,47 @@ interface VerticalAdProps {
 
 const VerticalAd: React.FC<VerticalAdProps> = ({ position }) => {
   useEffect(() => {
-    // Reload the ad script when component mounts
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = '//pl27116253.profitableratecpm.com/bb/8c/bc/bb8cbc1c9e56e786724cffe2554579a4.js';
-    script.async = true;
-    document.body.appendChild(script);
+    // Create a unique container ID for this ad
+    const containerId = `ad-container-${position}`;
+    const container = document.getElementById(containerId);
+    
+    if (container) {
+      // Reload the ad script when component mounts
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = '//pl27116253.profitableratecpm.com/bb/8c/bc/bb8cbc1c9e56e786724cffe2554579a4.js';
+      script.async = true;
+      
+      // Try to contain the ad within our container
+      script.onload = () => {
+        // Add CSS to try to contain ads within our boundaries
+        const style = document.createElement('style');
+        style.textContent = `
+          #${containerId} * {
+            max-width: 100% !important;
+            max-height: 100% !important;
+            position: relative !important;
+          }
+          #${containerId} iframe {
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 160px !important;
+            max-height: 75vh !important;
+          }
+        `;
+        document.head.appendChild(style);
+      };
+      
+      container.appendChild(script);
 
-    return () => {
-      // Cleanup on unmount
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
-      }
-    };
-  }, []);
+      return () => {
+        // Cleanup on unmount
+        if (container.contains(script)) {
+          container.removeChild(script);
+        }
+      };
+    }
+  }, [position]);
 
   return (
     <div 
@@ -40,10 +67,14 @@ const VerticalAd: React.FC<VerticalAdProps> = ({ position }) => {
         border-border
         rounded-lg
         shadow-lg
+        overflow-hidden
       `}
     >
-      <div className="w-full h-full p-2" id={`ad-${position}`}>
-        {/* Ad content will be injected by the script */}
+      <div 
+        className="w-full h-full p-2 relative overflow-hidden" 
+        id={`ad-container-${position}`}
+      >
+        {/* Fallback content */}
         <div className="w-full h-full bg-muted/20 rounded flex items-center justify-center text-muted-foreground text-sm">
           Advertisement
         </div>
