@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import EnhancedFlightForm from '../components/EnhancedFlightForm';
 import TicketPreview from '../components/TicketPreview';
@@ -73,9 +72,7 @@ const BannerAd: React.FC = () => {
 
   return (
     <div className="flex justify-center my-4">
-      <div className="w-[300px] h-[250px] bg-muted/20 rounded border flex items-center justify-center text-muted-foreground text-sm">
-        Advertisement
-      </div>
+      <div className="w-[300px] h-[250px]"></div>
     </div>
   );
 };
