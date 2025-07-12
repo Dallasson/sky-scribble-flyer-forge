@@ -20,19 +20,32 @@ const VerticalAd: React.FC<VerticalAdProps> = ({ position }) => {
       
       // Try to contain the ad within our container
       script.onload = () => {
-        // Add CSS to try to contain ads within our boundaries
+        // Add CSS to strictly contain ads within our boundaries
         const style = document.createElement('style');
         style.textContent = `
-          #${containerId} * {
-            max-width: 100% !important;
-            max-height: 100% !important;
+          #${containerId} {
+            overflow: hidden !important;
             position: relative !important;
           }
-          #${containerId} iframe {
-            width: 100% !important;
-            height: 100% !important;
+          #${containerId} * {
             max-width: 120px !important;
             max-height: 75vh !important;
+            position: relative !important;
+            overflow: hidden !important;
+          }
+          #${containerId} iframe {
+            width: 120px !important;
+            height: auto !important;
+            max-width: 120px !important;
+            max-height: 75vh !important;
+            border: none !important;
+            position: relative !important;
+          }
+          #${containerId} div,
+          #${containerId} span,
+          #${containerId} a {
+            max-width: 120px !important;
+            overflow: hidden !important;
           }
         `;
         document.head.appendChild(style);
@@ -73,6 +86,7 @@ const VerticalAd: React.FC<VerticalAdProps> = ({ position }) => {
       <div 
         className="w-full h-full p-2 relative overflow-hidden" 
         id={`ad-container-${position}`}
+        style={{ maxWidth: '120px', maxHeight: '75vh' }}
       >
         {/* Fallback content */}
         <div className="w-full h-full bg-muted/20 rounded flex items-center justify-center text-muted-foreground text-xs">
