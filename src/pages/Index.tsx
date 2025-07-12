@@ -1,8 +1,7 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import EnhancedFlightForm from '../components/EnhancedFlightForm';
 import TicketPreview from '../components/TicketPreview';
-import VerticalAd from '../components/VerticalAd';
 import { ThemeToggle } from '../components/ThemeToggle';
 import { Card } from '@/components/ui/card';
 import { Plane, Download } from 'lucide-react';
@@ -40,6 +39,47 @@ export interface FlightData {
   };
 }
 
+const BannerAd: React.FC = () => {
+  useEffect(() => {
+    const script1 = document.createElement('script');
+    script1.type = 'text/javascript';
+    script1.innerHTML = `
+      atOptions = {
+        'key' : 'acbe1f98f2c68cf849aaafe82aec80c2',
+        'format' : 'iframe',
+        'height' : 250,
+        'width' : 300,
+        'params' : {}
+      };
+    `;
+    
+    const script2 = document.createElement('script');
+    script2.type = 'text/javascript';
+    script2.src = '//www.highperformanceformat.com/acbe1f98f2c68cf849aaafe82aec80c2/invoke.js';
+    script2.async = true;
+    
+    document.head.appendChild(script1);
+    document.head.appendChild(script2);
+    
+    return () => {
+      if (document.head.contains(script1)) {
+        document.head.removeChild(script1);
+      }
+      if (document.head.contains(script2)) {
+        document.head.removeChild(script2);
+      }
+    };
+  }, []);
+
+  return (
+    <div className="flex justify-center my-4">
+      <div className="w-[300px] h-[250px] bg-muted/20 rounded border flex items-center justify-center text-muted-foreground text-sm">
+        Advertisement
+      </div>
+    </div>
+  );
+};
+
 const Index = () => {
   const [flightData, setFlightData] = useState<FlightData | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -59,13 +99,9 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background relative">
-      {/* Vertical Ads - positioned to not overlap content */}
-      <VerticalAd position="left" />
-      <VerticalAd position="right" />
-      
       {/* Header */}
       <div className="bg-card shadow-sm border-b border-border">
-        <div className="container mx-auto px-4 py-6 xl:px-40">
+        <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="bg-primary p-2 rounded-lg">
@@ -81,7 +117,7 @@ const Index = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8 xl:px-40">
+      <div className="container mx-auto px-4 py-8">
         {!flightData && !isGenerating && (
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-8">
@@ -92,7 +128,14 @@ const Index = () => {
                 Search through our extensive flight database and generate professional tickets
               </p>
             </div>
+            
+            {/* Banner Ad Above Form */}
+            <BannerAd />
+            
             <EnhancedFlightForm onSubmit={handleFormSubmit} />
+            
+            {/* Banner Ad Below Form */}
+            <BannerAd />
           </div>
         )}
 
@@ -129,7 +172,7 @@ const Index = () => {
 
       {/* Footer */}
       <footer className="bg-muted border-t border-border mt-16">
-        <div className="container mx-auto px-4 py-8 xl:px-40">
+        <div className="container mx-auto px-4 py-8">
           <div className="text-center text-muted-foreground">
             <p className="mb-2">
               <strong>Disclaimer:</strong> This is a fake ticket generator for entertainment purposes only.
