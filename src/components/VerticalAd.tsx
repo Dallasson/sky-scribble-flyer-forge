@@ -31,7 +31,7 @@ const VerticalAd: React.FC<VerticalAdProps> = ({ position }) => {
           #${containerId} iframe {
             width: 100% !important;
             height: 100% !important;
-            max-width: 160px !important;
+            max-width: 120px !important;
             max-height: 75vh !important;
           }
         `;
@@ -57,7 +57,7 @@ const VerticalAd: React.FC<VerticalAdProps> = ({ position }) => {
         top-1/2 
         transform 
         -translate-y-1/2 
-        w-40 
+        w-[120px]
         h-3/4 
         z-10 
         hidden 
@@ -75,7 +75,7 @@ const VerticalAd: React.FC<VerticalAdProps> = ({ position }) => {
         id={`ad-container-${position}`}
       >
         {/* Fallback content */}
-        <div className="w-full h-full bg-muted/20 rounded flex items-center justify-center text-muted-foreground text-sm">
+        <div className="w-full h-full bg-muted/20 rounded flex items-center justify-center text-muted-foreground text-xs">
           Advertisement
         </div>
       </div>
