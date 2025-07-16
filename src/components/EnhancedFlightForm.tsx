@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -327,8 +325,8 @@ const EnhancedFlightForm: React.FC<EnhancedFlightFormProps> = ({ onSubmit }) => 
         </form>
       </Card>
 
-      {/* Ad directly below card with no extra spacing */}
-      <div className="flex justify-center">
+      {/* Ad directly below card with minimal spacing */}
+      <div className="flex justify-center" style={{ marginTop: '20px' }}>
         <div ref={adContainerRef} className="w-[300px] h-[250px]"></div>
       </div>
     </div>
@@ -336,4 +334,3 @@ const EnhancedFlightForm: React.FC<EnhancedFlightFormProps> = ({ onSubmit }) => 
 };
 
 export default EnhancedFlightForm;
-

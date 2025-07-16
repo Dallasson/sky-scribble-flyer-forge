@@ -6,7 +6,6 @@ import { FlightData } from '../pages/Index';
 import { Download, Plane, Calendar, Clock, MapPin, User, CreditCard } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import EmailDownload from './EmailDownload';
 import RewardVideoModal from './RewardVideoModal';
 import { useToast } from '@/hooks/use-toast';
 
@@ -72,27 +71,6 @@ const TicketPreview: React.FC<TicketPreviewProps> = ({ flightData }) => {
     downloadPDF();
   };
 
-  const handleSendEmail = async (email: string) => {
-    try {
-      const pdfBlob = await generatePDF();
-      
-      // Simulate email sending (in real app, you'd call your backend API)
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      console.log(`Sending PDF to ${email}`, pdfBlob);
-      
-      // In a real implementation, you would send this to your backend:
-      // const formData = new FormData();
-      // formData.append('pdf', pdfBlob, `flight-ticket-${flightData.bookingRef}.pdf`);
-      // formData.append('email', email);
-      // await fetch('/api/send-email', { method: 'POST', body: formData });
-      
-    } catch (error) {
-      console.error('Error sending email:', error);
-      throw error;
-    }
-  };
-
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
@@ -110,11 +88,6 @@ const TicketPreview: React.FC<TicketPreviewProps> = ({ flightData }) => {
           <Download className="h-5 w-5 mr-2" />
           Download PDF
         </Button>
-        
-        <div className="w-full max-w-md">
-          <div className="text-center text-sm text-gray-600 mb-2">Or send directly to your email:</div>
-          <EmailDownload onSendEmail={handleSendEmail} />
-        </div>
       </div>
 
       <div ref={ticketRef} className="bg-white p-8 mx-auto" style={{ width: '800px' }}>
