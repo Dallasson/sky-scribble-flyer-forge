@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -16,46 +17,6 @@ interface EnhancedFlightFormProps {
   onSubmit: (data: FlightData) => void;
 }
 
-const BannerAd: React.FC = () => {
-  const [adId] = useState(`ad-${Math.random().toString(36).substr(2, 9)}`);
-
-  useEffect(() => {
-    // Create the ad container div
-    const adContainer = document.getElementById(adId);
-    if (!adContainer) return;
-
-    // Set the ad options
-    (window as any).atOptions = {
-      'key' : 'acbe1f98f2c68cf849aaafe82aec80c2',
-      'format' : 'iframe',
-      'height' : 250,
-      'width' : 300,
-      'params' : {}
-    };
-
-    // Create and append the script
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = '//www.highperformanceformat.com/acbe1f98f2c68cf849aaafe82aec80c2/invoke.js';
-    script.async = true;
-    
-    adContainer.appendChild(script);
-
-    return () => {
-      // Cleanup script when component unmounts
-      if (adContainer && script.parentNode) {
-        script.parentNode.removeChild(script);
-      }
-    };
-  }, [adId]);
-
-  return (
-    <div className="flex justify-center my-4">
-      <div id={adId} className="w-[300px] h-[250px]"></div>
-    </div>
-  );
-};
-
 const EnhancedFlightForm: React.FC<EnhancedFlightFormProps> = ({ onSubmit }) => {
   const [step, setStep] = useState<'search' | 'select'>('search');
   const [passengerName, setPassengerName] = useState('');
@@ -71,6 +32,35 @@ const EnhancedFlightForm: React.FC<EnhancedFlightFormProps> = ({ onSubmit }) => 
   const [selectedDeparture, setSelectedDeparture] = useState<FlightOption | null>(null);
   const [selectedReturn, setSelectedReturn] = useState<FlightOption | null>(null);
   const [isSearching, setIsSearching] = useState(false);
+
+  // Add ref for ad container
+  const adContainerRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Only load ad on search step
+    if (step === 'search' && adContainerRef.current) {
+      const script = document.createElement('script');
+      script.innerHTML = `
+        atOptions = {
+          'key' : 'acbe1f98f2c68cf849aaafe82aec80c2',
+          'format' : 'iframe',
+          'height' : 250,
+          'width' : 300,
+          'params' : {}
+        };
+      `;
+      document.head.appendChild(script);
+
+      const invokeScript = document.createElement('script');
+      invokeScript.src = '//www.highperformanceformat.com/acbe1f98f2c68cf849aaafe82aec80c2/invoke.js';
+      invokeScript.async = true;
+      adContainerRef.current.appendChild(invokeScript);
+
+      return () => {
+        if (script.parentNode) script.parentNode.removeChild(script);
+      };
+    }
+  }, [step]);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -223,122 +213,127 @@ const EnhancedFlightForm: React.FC<EnhancedFlightFormProps> = ({ onSubmit }) => 
   }
 
   return (
-    <Card className="max-w-2xl mx-auto p-8">
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Search Flights</h2>
-        <p className="text-gray-600">Find your perfect flight from our extensive database</p>
-      </div>
-
-      <form onSubmit={handleSearch} className="space-y-6">
-        {/* Passenger Name */}
-        <div>
-          <Label htmlFor="passengerName">Full Name</Label>
-          <Input
-            id="passengerName"
-            type="text"
-            value={passengerName}
-            onChange={(e) => setPassengerName(e.target.value)}
-            placeholder="Enter passenger's full name"
-            required
-          />
+    <div className="max-w-2xl mx-auto">
+      <Card className="p-8">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Search Flights</h2>
+          <p className="text-gray-600">Find your perfect flight from our extensive database</p>
         </div>
 
-        {/* Trip Type */}
-        <div>
-          <Label>Trip Type</Label>
-          <Select value={tripType} onValueChange={(value: 'one-way' | 'round-trip') => setTripType(value)}>
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="one-way">One Way</SelectItem>
-              <SelectItem value="round-trip">Round Trip</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Airport Selection */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
+        <form onSubmit={handleSearch} className="space-y-6">
+          {/* Passenger Name */}
           <div>
-            <Label>From</Label>
-            <AirportSearch
-              value={fromAirport}
-              onChange={setFromAirport}
-              placeholder="Departure airport"
+            <Label htmlFor="passengerName">Full Name</Label>
+            <Input
+              id="passengerName"
+              type="text"
+              value={passengerName}
+              onChange={(e) => setPassengerName(e.target.value)}
+              placeholder="Enter passenger's full name"
+              required
             />
           </div>
-          
-          <div className="flex items-center justify-center md:justify-start mb-2">
-            <Button
-              type="button"
-              variant="outline"
-              size="icon"
-              onClick={swapAirports}
-              className="h-10 w-10"
-            >
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </div>
-          
-          <div>
-            <Label>To</Label>
-            <AirportSearch
-              value={toAirport}
-              onChange={setToAirport}
-              placeholder="Destination airport"
-            />
-          </div>
-        </div>
 
-        {/* Date Selection */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Trip Type */}
           <div>
-            <Label htmlFor="departureDate">Departure Date</Label>
-            <div className="relative">
-              <Input
-                id="departureDate"
-                type="date"
-                value={departureDate}
-                onChange={(e) => setDepartureDate(e.target.value)}
-                min={new Date().toISOString().split('T')[0]}
-                required
+            <Label>Trip Type</Label>
+            <Select value={tripType} onValueChange={(value: 'one-way' | 'round-trip') => setTripType(value)}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="one-way">One Way</SelectItem>
+                <SelectItem value="round-trip">Round Trip</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Airport Selection */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
+            <div>
+              <Label>From</Label>
+              <AirportSearch
+                value={fromAirport}
+                onChange={setFromAirport}
+                placeholder="Departure airport"
               />
-              <Calendar className="absolute right-3 top-3 h-4 w-4 text-gray-400 pointer-events-none" />
+            </div>
+            
+            <div className="flex items-center justify-center md:justify-start mb-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={swapAirports}
+                className="h-10 w-10"
+              >
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </div>
+            
+            <div>
+              <Label>To</Label>
+              <AirportSearch
+                value={toAirport}
+                onChange={setToAirport}
+                placeholder="Destination airport"
+              />
             </div>
           </div>
-          
-          {tripType === 'round-trip' && (
+
+          {/* Date Selection */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="returnDate">Return Date</Label>
+              <Label htmlFor="departureDate">Departure Date</Label>
               <div className="relative">
                 <Input
-                  id="returnDate"
+                  id="departureDate"
                   type="date"
-                  value={returnDate}
-                  onChange={(e) => setReturnDate(e.target.value)}
-                  min={departureDate || new Date().toISOString().split('T')[0]}
-                  required={tripType === 'round-trip'}
+                  value={departureDate}
+                  onChange={(e) => setDepartureDate(e.target.value)}
+                  min={new Date().toISOString().split('T')[0]}
+                  required
                 />
                 <Calendar className="absolute right-3 top-3 h-4 w-4 text-gray-400 pointer-events-none" />
               </div>
             </div>
-          )}
-        </div>
+            
+            {tripType === 'round-trip' && (
+              <div>
+                <Label htmlFor="returnDate">Return Date</Label>
+                <div className="relative">
+                  <Input
+                    id="returnDate"
+                    type="date"
+                    value={returnDate}
+                    onChange={(e) => setReturnDate(e.target.value)}
+                    min={departureDate || new Date().toISOString().split('T')[0]}
+                    required={tripType === 'round-trip'}
+                  />
+                  <Calendar className="absolute right-3 top-3 h-4 w-4 text-gray-400 pointer-events-none" />
+                </div>
+              </div>
+            )}
+          </div>
 
-        <Button
-          type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3"
-          disabled={isSearching}
-        >
-          {isSearching ? 'Searching Flights...' : 'Search Flights'}
-          <Plane className="h-5 w-5 ml-2" />
-        </Button>
-      </form>
+          <Button
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3"
+            disabled={isSearching}
+          >
+            {isSearching ? 'Searching Flights...' : 'Search Flights'}
+            <Plane className="h-5 w-5 ml-2" />
+          </Button>
+        </form>
+      </Card>
 
-      {/* Banner Ad Below Search Flights Button */}
-      <BannerAd />
-    </Card>
+      {/* Ad directly below card with no extra spacing */}
+      <div className="flex justify-center">
+        <div ref={adContainerRef} className="w-[300px] h-[250px]"></div>
+      </div>
+    </div>
   );
 };
 
 export default EnhancedFlightForm;
+
