@@ -39,40 +39,41 @@ export interface FlightData {
 }
 
 const BannerAd: React.FC = () => {
+  const [adId] = useState(`ad-${Math.random().toString(36).substr(2, 9)}`);
+
   useEffect(() => {
-    const script1 = document.createElement('script');
-    script1.type = 'text/javascript';
-    script1.innerHTML = `
-      atOptions = {
-        'key' : 'acbe1f98f2c68cf849aaafe82aec80c2',
-        'format' : 'iframe',
-        'height' : 250,
-        'width' : 300,
-        'params' : {}
-      };
-    `;
+    // Create the ad container div
+    const adContainer = document.getElementById(adId);
+    if (!adContainer) return;
+
+    // Set the ad options
+    (window as any).atOptions = {
+      'key' : 'acbe1f98f2c68cf849aaafe82aec80c2',
+      'format' : 'iframe',
+      'height' : 250,
+      'width' : 300,
+      'params' : {}
+    };
+
+    // Create and append the script
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = '//www.highperformanceformat.com/acbe1f98f2c68cf849aaafe82aec80c2/invoke.js';
+    script.async = true;
     
-    const script2 = document.createElement('script');
-    script2.type = 'text/javascript';
-    script2.src = '//www.highperformanceformat.com/acbe1f98f2c68cf849aaafe82aec80c2/invoke.js';
-    script2.async = true;
-    
-    document.head.appendChild(script1);
-    document.head.appendChild(script2);
-    
+    adContainer.appendChild(script);
+
     return () => {
-      if (document.head.contains(script1)) {
-        document.head.removeChild(script1);
-      }
-      if (document.head.contains(script2)) {
-        document.head.removeChild(script2);
+      // Cleanup script when component unmounts
+      if (adContainer && script.parentNode) {
+        script.parentNode.removeChild(script);
       }
     };
-  }, []);
+  }, [adId]);
 
   return (
     <div className="flex justify-center my-4">
-      <div className="w-[300px] h-[250px]"></div>
+      <div id={adId} className="w-[300px] h-[250px]"></div>
     </div>
   );
 };
