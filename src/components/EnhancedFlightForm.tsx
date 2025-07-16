@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,6 +15,46 @@ import { FlightData } from '../pages/Index';
 interface EnhancedFlightFormProps {
   onSubmit: (data: FlightData) => void;
 }
+
+const BannerAd: React.FC = () => {
+  const [adId] = useState(`ad-${Math.random().toString(36).substr(2, 9)}`);
+
+  useEffect(() => {
+    // Create the ad container div
+    const adContainer = document.getElementById(adId);
+    if (!adContainer) return;
+
+    // Set the ad options
+    (window as any).atOptions = {
+      'key' : 'acbe1f98f2c68cf849aaafe82aec80c2',
+      'format' : 'iframe',
+      'height' : 250,
+      'width' : 300,
+      'params' : {}
+    };
+
+    // Create and append the script
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = '//www.highperformanceformat.com/acbe1f98f2c68cf849aaafe82aec80c2/invoke.js';
+    script.async = true;
+    
+    adContainer.appendChild(script);
+
+    return () => {
+      // Cleanup script when component unmounts
+      if (adContainer && script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    };
+  }, [adId]);
+
+  return (
+    <div className="flex justify-center my-4">
+      <div id={adId} className="w-[300px] h-[250px]"></div>
+    </div>
+  );
+};
 
 const EnhancedFlightForm: React.FC<EnhancedFlightFormProps> = ({ onSubmit }) => {
   const [step, setStep] = useState<'search' | 'select'>('search');
@@ -294,6 +334,9 @@ const EnhancedFlightForm: React.FC<EnhancedFlightFormProps> = ({ onSubmit }) => 
           <Plane className="h-5 w-5 ml-2" />
         </Button>
       </form>
+
+      {/* Banner Ad Below Search Flights Button */}
+      <BannerAd />
     </Card>
   );
 };
