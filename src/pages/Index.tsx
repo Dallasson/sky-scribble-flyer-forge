@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import EnhancedFlightForm from '../components/EnhancedFlightForm';
 import TicketPreview from '../components/TicketPreview';
@@ -78,6 +79,31 @@ const BannerAd: React.FC = () => {
   );
 };
 
+const BottomAd: React.FC = () => {
+  useEffect(() => {
+    // Create and append the script
+    const script = document.createElement('script');
+    script.async = true;
+    script.setAttribute('data-cfasync', 'false');
+    script.src = '//pl27182848.profitableratecpm.com/bac6f97cf8ee611d24eca5b47147639a/invoke.js';
+    
+    document.head.appendChild(script);
+
+    return () => {
+      // Cleanup script when component unmounts
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    };
+  }, []);
+
+  return (
+    <div className="flex justify-center my-4">
+      <div id="container-bac6f97cf8ee611d24eca5b47147639a"></div>
+    </div>
+  );
+};
+
 const Index = () => {
   const [flightData, setFlightData] = useState<FlightData | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -132,8 +158,8 @@ const Index = () => {
             
             <EnhancedFlightForm onSubmit={handleFormSubmit} />
             
-            {/* Banner Ad Below Form */}
-            <BannerAd />
+            {/* Bottom Ad Below Form */}
+            <BottomAd />
           </div>
         )}
 
