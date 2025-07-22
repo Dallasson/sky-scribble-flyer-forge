@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -30,35 +31,6 @@ const EnhancedFlightForm: React.FC<EnhancedFlightFormProps> = ({ onSubmit }) => 
   const [selectedDeparture, setSelectedDeparture] = useState<FlightOption | null>(null);
   const [selectedReturn, setSelectedReturn] = useState<FlightOption | null>(null);
   const [isSearching, setIsSearching] = useState(false);
-
-  // Add ref for ad container
-  const adContainerRef = React.useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // Only load ad on search step
-    if (step === 'search' && adContainerRef.current) {
-      const script = document.createElement('script');
-      script.innerHTML = `
-        atOptions = {
-          'key' : 'acbe1f98f2c68cf849aaafe82aec80c2',
-          'format' : 'iframe',
-          'height' : 250,
-          'width' : 300,
-          'params' : {}
-        };
-      `;
-      document.head.appendChild(script);
-
-      const invokeScript = document.createElement('script');
-      invokeScript.src = '//www.highperformanceformat.com/acbe1f98f2c68cf849aaafe82aec80c2/invoke.js';
-      invokeScript.async = true;
-      adContainerRef.current.appendChild(invokeScript);
-
-      return () => {
-        if (script.parentNode) script.parentNode.removeChild(script);
-      };
-    }
-  }, [step]);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -324,11 +296,6 @@ const EnhancedFlightForm: React.FC<EnhancedFlightFormProps> = ({ onSubmit }) => 
           </Button>
         </form>
       </Card>
-
-      {/* Ad directly below card with minimal spacing */}
-      <div className="flex justify-center" style={{ marginTop: '20px' }}>
-        <div ref={adContainerRef} className="w-[300px] h-[250px]"></div>
-      </div>
     </div>
   );
 };

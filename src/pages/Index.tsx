@@ -39,54 +39,16 @@ export interface FlightData {
   };
 }
 
-const BannerAd: React.FC = () => {
-  const [adId] = useState(`ad-${Math.random().toString(36).substr(2, 9)}`);
+const Index = () => {
+  const [flightData, setFlightData] = useState<FlightData | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   useEffect(() => {
-    // Create the ad container div
-    const adContainer = document.getElementById(adId);
-    if (!adContainer) return;
-
-    // Set the ad options
-    (window as any).atOptions = {
-      'key' : 'acbe1f98f2c68cf849aaafe82aec80c2',
-      'format' : 'iframe',
-      'height' : 250,
-      'width' : 300,
-      'params' : {}
-    };
-
-    // Create and append the script
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = '//www.highperformanceformat.com/acbe1f98f2c68cf849aaafe82aec80c2/invoke.js';
-    script.async = true;
-    
-    adContainer.appendChild(script);
-
-    return () => {
-      // Cleanup script when component unmounts
-      if (adContainer && script.parentNode) {
-        script.parentNode.removeChild(script);
-      }
-    };
-  }, [adId]);
-
-  return (
-    <div className="flex justify-center my-4">
-      <div id={adId} className="w-[300px] h-[250px]"></div>
-    </div>
-  );
-};
-
-const BottomAd: React.FC = () => {
-  useEffect(() => {
-    // Create and append the script
+    // Add Google AdSense script
     const script = document.createElement('script');
     script.async = true;
-    script.setAttribute('data-cfasync', 'false');
-    script.src = '//pl27182848.profitableratecpm.com/bac6f97cf8ee611d24eca5b47147639a/invoke.js';
-    
+    script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3330807216746348';
+    script.crossOrigin = 'anonymous';
     document.head.appendChild(script);
 
     return () => {
@@ -96,17 +58,6 @@ const BottomAd: React.FC = () => {
       }
     };
   }, []);
-
-  return (
-    <div className="flex justify-center my-4">
-      <div id="container-bac6f97cf8ee611d24eca5b47147639a"></div>
-    </div>
-  );
-};
-
-const Index = () => {
-  const [flightData, setFlightData] = useState<FlightData | null>(null);
-  const [isGenerating, setIsGenerating] = useState(false);
 
   const handleFormSubmit = (data: FlightData) => {
     setIsGenerating(true);
@@ -153,13 +104,7 @@ const Index = () => {
               </p>
             </div>
             
-            {/* Banner Ad Above Form */}
-            <BannerAd />
-            
             <EnhancedFlightForm onSubmit={handleFormSubmit} />
-            
-            {/* Bottom Ad Below Form */}
-            <BottomAd />
           </div>
         )}
 
