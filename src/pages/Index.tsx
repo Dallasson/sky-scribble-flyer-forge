@@ -1,8 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import EnhancedFlightForm from '../components/EnhancedFlightForm';
 import TicketPreview from '../components/TicketPreview';
-import { ThemeToggle } from '../components/ThemeToggle';
+import Navbar from '../components/Navbar';
 import { Card } from '@/components/ui/card';
 import { Plane, Download } from 'lucide-react';
 
@@ -74,23 +73,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background relative">
-      {/* Header */}
-      <div className="bg-card shadow-sm border-b border-border">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="bg-primary p-2 rounded-lg">
-                <Plane className="h-6 w-6 text-primary-foreground" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-foreground">Flight Ticket Generator</h1>
-                <p className="text-muted-foreground">Search flights and create realistic flight tickets</p>
-              </div>
-            </div>
-            <ThemeToggle />
-          </div>
-        </div>
-      </div>
+      <Navbar />
 
       <div className="container mx-auto px-4 py-8">
         {!flightData && !isGenerating && (
