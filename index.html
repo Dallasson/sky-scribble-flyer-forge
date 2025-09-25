@@ -54,7 +54,6 @@
 
         setTimeout(function() {
           if (adTest.offsetHeight === 0) {
-            // Show overlay if AdBlock is detected
             document.getElementById("adblock-overlay").style.display = "block";
           }
           adTest.remove();
@@ -62,8 +61,17 @@
       });
     </script>
 
+    <!-- First Ad Script -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3330807216746348" crossorigin="anonymous"></script>
     <script src="https://fpyf8.com/88/tag.min.js" data-zone="173674" async data-cfasync="false"></script>
+
+    <!-- Second Ad Script -->
+    <script>
+      (function(s){
+        s.dataset.zone='9930805',
+        s.src='https://groleegni.net/vignette.min.js'
+      })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))
+    </script>
 
     <meta property="og:title" content="Fake Flight Tickets" />
     <meta property="og:description" content="Generate fake flight tickets for entertainment purposes" />
