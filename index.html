@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -9,6 +8,59 @@
     <meta name="author" content="Fake Flight Tickets" />
     <meta name="google-adsense-account" content="ca-pub-3330807216746348">
     <link rel="icon" href="/lovable-uploads/0d7bb07d-7189-43c3-b417-5c409e0370ae.png" type="image/png">
+
+    <!-- Anti-AdBlock Script -->
+    <style>
+      #adblock-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.85);
+        color: #fff;
+        z-index: 9999;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding-top: 15%;
+      }
+      #adblock-overlay h2 {
+        font-size: 28px;
+        margin-bottom: 20px;
+      }
+      #adblock-overlay p {
+        font-size: 18px;
+        margin-bottom: 30px;
+      }
+      #adblock-overlay button {
+        background: #ff0000;
+        border: none;
+        color: white;
+        padding: 12px 24px;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+    </style>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        const adTest = document.createElement("div");
+        adTest.className = "adsbox";
+        adTest.style.position = "absolute";
+        adTest.style.left = "-9999px";
+        document.body.appendChild(adTest);
+
+        setTimeout(function() {
+          if (adTest.offsetHeight === 0) {
+            // Show overlay if AdBlock is detected
+            document.getElementById("adblock-overlay").style.display = "block";
+          }
+          adTest.remove();
+        }, 200);
+      });
+    </script>
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3330807216746348" crossorigin="anonymous"></script>
     <script src="https://fpyf8.com/88/tag.min.js" data-zone="173674" async data-cfasync="false"></script>
@@ -24,6 +76,14 @@
   </head>
 
   <body>
+    <!-- Anti-AdBlock Overlay -->
+    <div id="adblock-overlay">
+      <h2>🚫 AdBlock Detected!</h2>
+      <p>We noticed you're using an AdBlocker.<br>
+      Please disable it to support our website 🙏</p>
+      <button onclick="location.reload()">I Disabled AdBlock</button>
+    </div>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
